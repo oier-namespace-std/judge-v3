@@ -72,12 +72,31 @@ export abstract class JudgerBase {
         winston.debug(`Totally ${results.length} subtasks.`);
 
         const judgeTasks: Promise<void>[] = [];
+        let need:number[][]=[];
+        let needNumber:number[]=[];
+        for(let subtaskIndex=0;subtaskIndex<this.testData.subtasks.length;subtaskIndex++){
+            needNumber.push(0);
+        }
         for (let subtaskIndex = 0; subtaskIndex < this.testData.subtasks.length; subtaskIndex++) {
             const currentResult = results[subtaskIndex];
             const currentTask = this.testData.subtasks[subtaskIndex];
-
             const updateCurrentSubtaskScore = () => updateSubtaskScore(currentTask, currentResult);
-
+            let needFail:boolean=false;
+            for(let index=0;index<needNumber[subtaskIndex];index++){
+                let needIndex=need[subtaskIndex][index];
+                if(results[needIndex].score!=this.testData.subtasks[needIndex].score){
+                    results[subtaskIndex].score=NaN;
+                    needFail=true;
+                    for (let taskIndex = 0; taskIndex < currentTask.cases.length; taskIndex++) {
+                        const currentTaskResult = currentResult.cases[index];
+                        currentTaskResult.status = TaskStatus.Skipped;
+                    }
+                }
+                updateCurrentSubtaskScore();
+            }
+            if(needFail){
+                continue;
+            }
             //judgeTasks.push((async () => {
                 // Type minimum is skippable, run one by one
                 if (currentTask.type !== SubtaskScoringType.Summation) {
