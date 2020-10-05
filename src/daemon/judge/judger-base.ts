@@ -78,7 +78,7 @@ export abstract class JudgerBase {
 
             const updateCurrentSubtaskScore = () => updateSubtaskScore(currentTask, currentResult);
 
-            judgeTasks.push((async () => {
+            //judgeTasks.push((async () => {
                 // Type minimum is skippable, run one by one
                 if (currentTask.type !== SubtaskScoringType.Summation) {
                     let skipped: boolean = false;
@@ -136,9 +136,9 @@ export abstract class JudgerBase {
                 }
                 updateCurrentSubtaskScore();
                 winston.verbose(`Subtask ${subtaskIndex}, finished`);
-            })());
+            //})());
         }
-        await Promise.all(judgeTasks);
+        //await Promise.all(judgeTasks);
         return { subtasks: results };
     }
     protected abstract judgeTestcase(curCase: TestcaseJudge, started: () => Promise<void>): Promise<TestcaseDetails>;
