@@ -99,11 +99,13 @@ export abstract class JudgerBase {
                 }
                 //updateCurrentSubtaskScore();
             }
+            winston.warn("subtask need check finish!");
             if(needFail){
                 continue;
             }
             //judgeTasks.push((async () => {
                 // Type minimum is skippable, run one by one
+                winston.warn("start running program...");
                 if (currentTask.type !== SubtaskScoringType.Summation) {
                     let skipped: boolean = false;
                     for (let index = 0; index < currentTask.cases.length; index++) {
