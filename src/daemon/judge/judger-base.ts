@@ -87,7 +87,7 @@ export abstract class JudgerBase {
             const updateCurrentSubtaskScore = () => updateSubtaskScore(currentTask, currentResult);
             let needFail:boolean=false;
             for(let index=0;index<currentTask.needNumber;index++){
-                let needIndex=currentTask.need[index];
+                let needIndex=currentTask.need[index]-1;
                 if(results[needIndex].score!=this.testData.subtasks[needIndex].score){
                     results[subtaskIndex].score=0;
                     needFail=true;
