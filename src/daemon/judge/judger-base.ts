@@ -136,11 +136,11 @@ export abstract class JudgerBase {
                     }
                 } else {
                     // Non skippable, run all immediately
-                    const caseTasks: Promise<void>[] = [];
+                    //const caseTasks: Promise<void>[] = [];
                     for (let index = 0; index < currentTask.cases.length; index++) {
-                        caseTasks.push((async () => {
+                        //caseTasks.push((async () => {
                             const currentTaskResult = currentResult.cases[index];
-                            winston.verbose(`Judging ${subtaskIndex}, case ${index}.`);
+                            winston.warn(`Judging ${subtaskIndex}, case ${index}.`);
                             try {
                                 currentTaskResult.result = await judgeTestcaseWrapper(currentTask.cases[index], async () => {
                                     currentTaskResult.status = TaskStatus.Running;
@@ -154,9 +154,9 @@ export abstract class JudgerBase {
                             }
                             updateCurrentSubtaskScore();
                             await reportProgress();
-                        })());
+                        //})());
                     }
-                    await Promise.all(caseTasks);
+                    //await Promise.all(caseTasks);
                 }
                 updateCurrentSubtaskScore();
                 winston.verbose(`Subtask ${subtaskIndex}, finished`);
