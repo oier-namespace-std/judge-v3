@@ -6,13 +6,14 @@ import { compareStringByNumber, tryReadFile, filterPath } from '../utils';
 import { SubtaskScoringType, SubtaskJudge, TestcaseJudge, Executable, TestData } from './interfaces';
 import { FileContent } from '../interfaces';
 import { globalConfig as Cfg } from './config';
+import winston = require('winston');
 
 export interface UserSubtask {
     score: number;
     type: string;
     cases: (string | number)[];
-    needNumber: number;
-    need: number[];
+    needNumber?: number;
+    need?: number[];
 }
 
 export interface UserConfigFile {
@@ -49,6 +50,7 @@ async function parseExecutable(src: any, dataPath: string): Promise<Executable> 
 
 async function parseYamlContent(obj: UserConfigFile, dataName: string): Promise<TestData> {
     const dataPath = pathLib.join(Cfg.testDataDirectory, dataName);
+    
     let extraFiles: { [language: string]: FileContent[] } = {};
     if (obj.extraSourceFiles) {
         for (let l of obj.extraSourceFiles) {
@@ -85,6 +87,8 @@ export async function readRulesFile(dataName: string): Promise<TestData> {
     const dataPath = pathLib.join(Cfg.testDataDirectory, dataName);
     let fileContent = await tryReadFile(pathLib.join(dataPath, 'data.yml'));
     if (fileContent != null) {
+        console.log("fildContent not null");
+        console.log(fileContent);
         return parseYamlContent(yaml.safeLoad(fileContent) as UserConfigFile, dataName);
     } else { // No data.yml
         let spj: Executable = null;
