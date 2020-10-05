@@ -72,27 +72,32 @@ export abstract class JudgerBase {
         winston.debug(`Totally ${results.length} subtasks.`);
 
         const judgeTasks: Promise<void>[] = [];
-        let need:number[][]=[];
+        /*let need:number[][]=[];
         let needNumber:number[]=[];
         for(let subtaskIndex=0;subtaskIndex<this.testData.subtasks.length;subtaskIndex++){
-            needNumber.push(0);
-        }
+            needNumber.push(subtaskIndex);
+            need.push([]);
+            for(let index=0;index<subtaskIndex;index++){
+                need[subtaskIndex].push(index);
+            }
+        }*/
         for (let subtaskIndex = 0; subtaskIndex < this.testData.subtasks.length; subtaskIndex++) {
             const currentResult = results[subtaskIndex];
             const currentTask = this.testData.subtasks[subtaskIndex];
             const updateCurrentSubtaskScore = () => updateSubtaskScore(currentTask, currentResult);
             let needFail:boolean=false;
-            for(let index=0;index<needNumber[subtaskIndex];index++){
-                let needIndex=need[subtaskIndex][index];
+            for(let index=0;index<currentTask.needNumber;index++){
+                let needIndex=currentTask.need[index];
                 if(results[needIndex].score!=this.testData.subtasks[needIndex].score){
-                    results[subtaskIndex].score=NaN;
+                    results[subtaskIndex].score=0;
                     needFail=true;
                     for (let taskIndex = 0; taskIndex < currentTask.cases.length; taskIndex++) {
-                        const currentTaskResult = currentResult.cases[index];
+                        const currentTaskResult = currentResult.cases[taskIndex];
                         currentTaskResult.status = TaskStatus.Skipped;
                     }
+                    currentTask.score=0;
                 }
-                updateCurrentSubtaskScore();
+                //updateCurrentSubtaskScore();
             }
             if(needFail){
                 continue;

@@ -51,6 +51,8 @@ export interface TestcaseJudge {
 
 export interface SubtaskJudge {
     type: SubtaskScoringType;
+    need: number[];
+    needNumber: number;
     score: number;
     cases: TestcaseJudge[];
 }

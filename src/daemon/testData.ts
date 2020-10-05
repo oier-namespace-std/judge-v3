@@ -11,6 +11,8 @@ export interface UserSubtask {
     score: number;
     type: string;
     cases: (string | number)[];
+    needNumber: number;
+    need: number[];
 }
 
 export interface UserConfigFile {
@@ -68,7 +70,9 @@ async function parseYamlContent(obj: UserConfigFile, dataName: string): Promise<
                 output: obj.outputFile ? filterPath(obj.outputFile.replace('#', c.toString())) : null,
                 userOutputFile: obj.userOutput ? filterPath(obj.userOutput.replace('#', c.toString())) : null,
                 name: c.toString()
-            }))
+            })),
+            needNumber:s.needNumber,
+            need:s.need
         })),
         spj: obj.specialJudge && await parseExecutable(obj.specialJudge, dataPath),
         extraSourceFiles: extraFiles,
@@ -133,7 +137,9 @@ export async function readRulesFile(dataName: string): Promise<TestData> {
             subtasks: [{
                 score: 100,
                 type: SubtaskScoringType.Summation,
-                cases: cases
+                cases: cases,
+                needNumber: 0,
+                need:[]
             }],
             spj: spj,
             name: dataName,
