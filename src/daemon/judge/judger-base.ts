@@ -102,8 +102,8 @@ export abstract class JudgerBase {
             winston.warn("subtask need check finish!");
             if(needFail){
                 updateCurrentSubtaskScore();
-                currentTask.score=0;
                 await reportProgress();
+                winston.verbose(`Subtask ${subtaskIndex}, finished`);
                 continue;
             }
             //judgeTasks.push((async () => {
