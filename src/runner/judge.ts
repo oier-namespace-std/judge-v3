@@ -64,7 +64,7 @@ async function runSpj(spjBinDir: string, spjLanguage: Language): Promise<SpjResu
         if ((!scoreString) || isNaN(score) || score < 0 || score > spjFullScore) {
             return {
                 status: TestcaseResultType.JudgementFailed,
-                message: `Special Judge returned an unrecognized score: ${scoreString}.\nMessage:${messageString}`,
+                message: `${messageString}\nSpecial Judge returned an unrecognized score: ${scoreString}.\n`,
                 score: 0
             };
         } else {
