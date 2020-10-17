@@ -80,3 +80,6 @@ tags
 
 /lib/
 /testdata/
+
+# Develop tool folder
+/.vscode/
